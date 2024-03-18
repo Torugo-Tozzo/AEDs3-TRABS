@@ -58,7 +58,7 @@ pair<int, int> movimentaPonto(const pair<int, int>& pontoEntrada, const vector<v
 }
 
 int main() {
-    string nomeArquivo = "../labirintos/labirinto2.txt"; // Substitua "arquivo.txt" pelo nome do seu arquivo
+    string nomeArquivo = "../labirintos/labirinto5.txt"; // Substitua "arquivo.txt" pelo nome do seu arquivo
     pair<int, int> pontoEntrada;
     pair<int, int> dimensoes;
     int nPassos = 0;
