@@ -1,0 +1,21 @@
+Pra q serve:
+
+Quanto mais próximo um vértice estiver de todos os outros, maior será o seu valor de closeness.
+
+Onde pode ser usado:
+
+Redes Sociais: Em redes sociais online, a medida de closeness pode ser usada para identificar usuários que estão mais próximos ou centralizados na rede. Isso pode ajudar a identificar influenciadores, líderes de opinião ou indivíduos que são centrais para a disseminação de informações.
+
+Infraestrutura de Transporte: Em redes de transporte, como sistemas de rodovias, ferrovias ou rotas aéreas, a closeness pode ser usada para identificar os nós que estão mais centralizados em relação a outros, indicando sua importância para a conectividade geral do sistema.
+
+Redes de Comunicação: Em redes de comunicação, como a internet ou redes de comunicação sem fio, a closeness pode ser usada para identificar roteadores ou pontos de acesso que são mais centrais e, portanto, críticos para a comunicação eficiente na rede.
+
+Análise de Redes Biológicas: Em biologia, a closeness pode ser aplicada em redes de interação entre proteínas, genes ou neurônios para identificar elementos centrais que desempenham papéis importantes na regulação biológica.
+
+Sistemas de Distribuição de Energia: Em redes de distribuição de energia elétrica, a closeness pode ser usada para identificar subestações ou nós de transmissão que são críticos para a eficiência e confiabilidade do sistema.
+
+Análise de Coautoria Científica: Em redes de coautoria científica, a closeness pode ser usada para identificar pesquisadores que estão mais próximos ou centralizados na rede, indicando sua importância na colaboração científica.
+
+Caracterostica dos Grafos:
+
+PONDERADO; 25 - 75 VERTICES; 
