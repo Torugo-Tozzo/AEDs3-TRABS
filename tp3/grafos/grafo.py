@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Carregar o grafo a partir de um arquivo
-G = nx.read_edgelist("grafo3.txt", nodetype=int, data=(('weight',int),))
+G = nx.read_edgelist("grafo3.txt", nodetype=int, data=(('weight',int),), create_using=nx.Graph())
 
 # Calcular a closeness centrality de cada vértice
 closeness = nx.closeness_centrality(G)

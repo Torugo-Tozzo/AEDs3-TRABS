@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -21,34 +20,26 @@ int main() {
         // Número aleatório de vértices entre 25 e 75
         int num_vertices = rand() % 51 + 25;
 
+        // Número aleatório de arestas para cada vértice entre 2 e 6
+        vector<vector<pair<int, int>>> lista_adjacencia(num_vertices);
+
+        for (int j = 0; j < num_vertices; ++j) {
+            int num_arestas = rand() % 5 + 2;
+
+            for (int k = 0; k < num_arestas; ++k) {
+                int vertice_destino = rand() % num_vertices;
+                int peso = rand() % 10 + 1;
+                lista_adjacencia[j].push_back({vertice_destino, peso});
+            }
+        }
+
         // Escreve o número de vértices no arquivo
         outfile << num_vertices << endl;
 
-        // Lista de vértices
-        vector<int> vertices(num_vertices);
+        // Escreve a lista de adjacência no arquivo
         for (int j = 0; j < num_vertices; ++j) {
-            vertices[j] = j;
-        }
-
-        // Embaralha a lista de vértices
-        random_shuffle(vertices.begin(), vertices.end());
-
-        // Gera o grafo aleatório com pesos de 1 a 10
-        for (int j = 0; j < num_vertices; ++j) {
-            // Número aleatório de arestas para o vértice j entre 2 e 6
-            int num_arestas = rand() % 5 + 2;
-
-            // Embaralha a lista de vértices excluindo o próprio vértice j
-            vector<int> outros_vertices = vertices;
-            outros_vertices.erase(find(outros_vertices.begin(), outros_vertices.end(), j));
-
-            random_shuffle(outros_vertices.begin(), outros_vertices.end());
-
-            // Seleciona aleatoriamente num_arestas vértices para conectar a j
-            for (int k = 0; k < min(num_arestas, int(outros_vertices.size())); ++k) {
-                int vertice_destino = outros_vertices[k];
-                int peso = rand() % 10 + 1;
-                outfile << j << " " << vertice_destino << " " << peso << endl;
+            for (auto& aresta : lista_adjacencia[j]) {
+                outfile << j << " " << aresta.first << " " << aresta.second << endl;
             }
         }
 
