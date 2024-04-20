@@ -1,69 +1,86 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
-#include <queue>
 #include <limits>
-#include <utility>
+#include <cmath>
+#include <iomanip>
 
 using namespace std;
 
-// Definição de um grafo ponderado como lista de adjacência de pares (vértice destino, peso da aresta)
-typedef vector<vector<pair<int, int>>> WeightedGraph;
+const double INF = numeric_limits<double>::max();
 
-// Função para calcular as distâncias de todos os vértices a partir de um vértice fonte usando o algoritmo de Dijkstra
-vector<int> dijkstra_distances(const WeightedGraph& graph, int source) {
-    int num_vertices = graph.size();
-    vector<int> distances(num_vertices, numeric_limits<int>::max()); // Inicializa todas as distâncias como infinito
-    distances[source] = 0; // A distância do vértice fonte a ele mesmo é 0
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // Fila de prioridade para armazenar os vértices a serem visitados
-    pq.push({0, source});
-    while (!pq.empty()) {
-        int current_vertex = pq.top().second;
-        int current_distance = pq.top().first;
-        pq.pop();
-        if (current_distance > distances[current_vertex]) continue; // Se a distância atual for maior que a armazenada, ignore
-        for (auto& edge : graph[current_vertex]) {
-            int neighbor = edge.first;
-            int weight = edge.second;
-            int new_distance = current_distance + weight;
-            if (new_distance < distances[neighbor]) {
-                distances[neighbor] = new_distance;
-                pq.push({new_distance, neighbor});
+int minDistance(const vector<double>& dist, const vector<bool>& sptSet) {
+    double minDist = INF;
+    int minIndex = -1;
+    for (size_t v = 0; v < dist.size(); ++v) {
+        if (!sptSet[v] && dist[v] <= minDist) {
+            minDist = dist[v];
+            minIndex = v;
+        }
+    }
+    return minIndex;
+}
+
+vector<double> dijkstraDistances(const vector<vector<int>>& graph, int source) {
+    int V = graph.size();
+    vector<double> dist(V, INF);
+    vector<bool> sptSet(V, false);
+    dist[source] = 0.0;
+
+    for (int count = 0; count < V - 1; ++count) {
+        int u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+        for (int v = 0; v < V; ++v) {
+            if (!sptSet[v] && graph[u][v] && dist[u] + graph[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph[u][v];
             }
         }
     }
-    return distances;
+
+    return dist;
 }
 
-// Função para calcular a closeness centrality de um vértice em um grafo ponderado
-double closeness_centrality(const WeightedGraph& graph, int vertex) {
-    int num_vertices = graph.size();
-    double total_distance = 0;
-    // Calcula as distâncias de todos os vértices a partir do vértice atual usando Dijkstra
-    vector<int> distances = dijkstra_distances(graph, vertex);
-    // Soma todas as distâncias encontradas
-    for (int dist : distances) {
-        total_distance += dist;
+double closenessCentrality(const vector<vector<int>>& graph, int vertex) {
+    int V = graph.size();
+    vector<double> distances = dijkstraDistances(graph, vertex);
+
+    double total_distance = 0.0;
+    int reachable_vertices = 0;
+    for (double dist : distances) {
+        if (dist != INF) {
+            total_distance += dist;
+            reachable_vertices++;
+        }
     }
-    // Retorna o inverso da soma das distâncias como closeness centrality
-    return 1.0 / total_distance;
+    
+    // Evitar divisão por zero
+    return (reachable_vertices > 1) ? (reachable_vertices - 1) / total_distance : 0;
 }
 
 int main() {
-    // Exemplo de uso
-    int num_vertices = 5;
-    WeightedGraph g(num_vertices);
+    ifstream inFile("grafo_aleatorio_adjacencia.txt");
+    int num_vertices;
+    inFile >> num_vertices;
 
-    // Adiciona arestas ao grafo (exemplo)
-    g[0] = {{1, 2}, {2, 3}, {3, 4}};
-    g[1] = {{0, 2}, {4, 1}};
-    g[2] = {{0, 3}, {4, 2}};
-    g[3] = {{0, 4}};
-    g[4] = {{1, 1}, {2, 2}};
-
-    // Calcula a closeness centrality para todos os vértices
+    vector<vector<int>> graph(num_vertices, vector<int>(num_vertices, 0));
     for (int i = 0; i < num_vertices; ++i) {
-        cout << "Closeness Centrality of vertex " << i << ": " << closeness_centrality(g, i) << endl;
+        for (int j = 0; j < num_vertices; ++j) {
+            inFile >> graph[i][j];
+        }
     }
+    inFile.close();
+
+    vector<double> centralities(num_vertices);
+    for (int i = 0; i < num_vertices; ++i) {
+        centralities[i] = closenessCentrality(graph, i);
+    }
+
+    // Escrever as centralidades em um arquivo de texto para o script Python
+    ofstream outFile("centralidades.txt");
+    for (int i = 0; i < num_vertices; ++i) {
+        outFile << i << " " << scientific << setprecision(10) << centralities[i] << endl;
+    }
+    outFile.close();
 
     return 0;
 }
