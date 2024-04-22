@@ -53,12 +53,11 @@ double closenessCentrality(const vector<vector<int>>& graph, int vertex) {
         }
     }
     
-    // Evitar divisão por zero
     return (reachable_vertices > 1) ? (reachable_vertices - 1) / total_distance : 0;
 }
 
 int main() {
-    ifstream inFile("grafo_aleatorio_adjacencia.txt");
+    ifstream inFile("grafo_ponderado_adjacencia.txt");
     int num_vertices;
     inFile >> num_vertices;
 

@@ -19,7 +19,7 @@ def read_closeness(filename):
         return closeness
 
 # Ler o grafo da matriz de adjacência
-num_vertices, adjacency_matrix = read_adjacency_matrix("grafo_aleatorio_adjacencia.txt")
+num_vertices, adjacency_matrix = read_adjacency_matrix("grafo_ponderado_adjacencia.txt")
 
 # Criar o grafo direcionado
 G = nx.Graph()
